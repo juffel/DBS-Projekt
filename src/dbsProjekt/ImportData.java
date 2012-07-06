@@ -12,9 +12,17 @@ import java.sql.SQLException;
 public class ImportData {
 	
 	/**
+	 * erstellt eine neue Datenbank, auf welcher ein in der Datei file abgelegter SQL-Query ausgeführt wird
+	 * @param file
+	 */
+	public void init(String file) {
+		
+	}
+	
+	/**
 	 * baut Verbindung zur angegebenen Datenbank auf
 	 */
-	private void openConnection(String server, String port, String name, String user, String password) {
+	private Connection openConnection(String server, String port, String name, String user, String password) {
 		
 		try{
 			// Treiber laden
@@ -51,6 +59,7 @@ public class ImportData {
 		
 		// Verbindung konnte hergestellt werden!
 		System.out.println("Die Verbingung zur Datenbank wurde hergestellt.");
+		return conn;
 	}
 	
 
