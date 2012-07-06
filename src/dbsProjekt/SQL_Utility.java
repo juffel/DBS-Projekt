@@ -13,7 +13,7 @@ public class SQL_Utility {
 		
 		while(res.next()) {
 			for(int i = 1; i <= columns; i++) {
-				System.out.print(res.getObject(i).toString() + "\t");
+				System.out.print(res.getObject(i).toString() + "\t\t");
 			}
 			System.out.print("\n");
 		}
