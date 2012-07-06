@@ -2,3 +2,9 @@
 /bin
 .classpath
 .project
+.class
+*~
+*.swp
+*.swo
+~*
+.~*
