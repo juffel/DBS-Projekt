@@ -18,9 +18,9 @@ public class ImportData {
 	 * erstellt eine neue Datenbank, auf welcher ein in der Datei file abgelegter SQL-Query ausgeführt wird
 	 * @param file
 	 */
-	public void init(String file) {
+	public void init(String path) {
 		
-		File input = new File("./lange_nacht_postgres.sql");
+		File input = new File(path);
 		BufferedReader rdr;
 		
 		try {
@@ -60,9 +60,10 @@ public class ImportData {
 			e.printStackTrace();
 		}
 		
-		// Queries ausführen
-		
-		System.out.println("breakpoint");
+		// Queries ausgeben
+		for(String s:queries) {
+			System.out.println(s);
+		}
 
 		
 	}
