@@ -1,19 +1,17 @@
 package dbsProjekt;
 
-//import java.sql.Connection;
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TestConnection {
 	public static void test() {
-		Connection connection = new Connection("localhost", "5432", "testDB", "testUser", "password");
+		Connection connection = new Connection("localhost", "5432", "testdb", "testuser", "password");
 		
 		try {
 			Statement stmt = connection.get().createStatement();
 			
-			stmt.executeQuery("CREATE TABLE IF NOT EXISTS Veranstalter (" +
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Veranstalter (" +
 										"Arbeitsgruppe varchar(255)," +
 										"Institut varchar(255)," +
 										"Fachbereich varchar(255)," +
@@ -22,8 +20,8 @@ public class TestConnection {
 			
 			System.out.println("Tabelle erfolgreich erstellt");
 			
-			stmt.executeQuery("INSERT INTO Veranstalter VALUES ('A-Team','Spaßinstitut', 'Chromosomik', 'Kein Kommentar'); ");
-			stmt.executeQuery("INSERT INTO Veranstalter VALUES ('Teletubbies','Übermorgenland', 'Gesellschaftswissenschaften', 'Pudding!'); ");
+			stmt.executeUpdate("INSERT INTO Veranstalter VALUES ('A-Team','Spaßinstitut', 'Chromosomik', 'Kein Kommentar'); ");
+			stmt.executeUpdate("INSERT INTO Veranstalter VALUES ('Teletubbies','Übermorgenland', 'Gesellschaftswissenschaften', 'Pudding!'); ");
 			
 			System.out.println("2 Zeilen eingefügt");
 			
@@ -44,7 +42,7 @@ public class TestConnection {
 				System.out.println("Einfügen war vmtl. erfolgreich!");
 			}
 			
-			stmt.executeQuery("DROP TABLE Veranstalter;");
+			stmt.executeUpdate("DROP TABLE Veranstalter;");
 			
 			res = stmt.executeQuery("SELECT * FROM Veranstalter;");
 			
@@ -56,7 +54,6 @@ public class TestConnection {
 			System.out.println("Beende Testfunktion");
 			
 			System.exit(0);		
-			
 			
 			
 		} catch (SQLException e) {
