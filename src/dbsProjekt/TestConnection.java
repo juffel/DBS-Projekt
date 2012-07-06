@@ -1,6 +1,7 @@
 package dbsProjekt;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -27,14 +28,17 @@ public class TestConnection {
 			
 			ResultSet res = stmt.executeQuery("SELECT * FROM Veranstalter;");
 			
+			// Die Anzahl der Spalten einer Tabelle kann man über ein Metadata-Objekt des ResultSets herausfinden!
+			ResultSetMetaData rsmd = res.getMetaData();
+			System.out.println("ColumnCount: " + rsmd.getColumnCount());
+			
+			SQL_Utility.printResultSet(res);
+			
+			res = stmt.executeQuery("SELECT Institut FROM Veranstalter;");
+			
 			while(res.next()) {
-				String AG = res.getString("Arbeitsgruppe");
 				String Ins = res.getString("Institut");
-				String FB = res.getString("Fachbereich");
-				String Km = res.getString("Kommentar");
-				
-				System.out.println(AG + "\t" + Ins + "\t" + FB + "\t" + Km);
-				
+				System.out.println(Ins);
 			}
 			
 			stmt.executeUpdate("DROP TABLE Veranstalter;");
