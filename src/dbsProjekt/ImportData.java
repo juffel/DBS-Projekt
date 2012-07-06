@@ -22,7 +22,7 @@ public class ImportData {
 	/**
 	 * baut Verbindung zur angegebenen Datenbank auf
 	 */
-	private Connection openConnection(String server, String port, String name, String user, String password) {
+	public Connection openConnection(String server, String port, String name, String user, String password) {
 		
 		try{
 			// Treiber laden
