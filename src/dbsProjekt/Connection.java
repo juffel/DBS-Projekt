@@ -1,12 +1,14 @@
 package dbsProjekt;
 
-// import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connection {
+	
 	private java.sql.Connection connection;
+	
 	public java.sql.Connection get() { return connection; }
+	
 	/**
 	 * baut Verbindung zur angegebenen Datenbank auf
 	 */
@@ -37,7 +39,7 @@ public class Connection {
 		}
 		catch (SQLException sqle){
 			// Verbindung konnte nicht hergestellt werden!
-			System.out.println("Verbindungkonnte nicht hergestellt werden!");
+			System.out.println("Verbindung konnte nicht hergestellt werden!");
 			
 			// Stacktrace ausgeben um mögliche Fehler nachzuvollziehen
 			sqle.printStackTrace();
