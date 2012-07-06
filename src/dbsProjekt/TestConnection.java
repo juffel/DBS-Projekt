@@ -6,10 +6,10 @@ import java.sql.Statement;
 
 public class TestConnection {
 	
-	public void test() {
+	public static void test() {
 		
 		ImportData tmp = new ImportData();
-		Connection con = tmp.openConnection("localhost", "5432", "testDB", "testuser", "password");
+		Connection con = tmp.openConnection("localhost", "5432", "testDB", "testUser", "password");
 		
 		try {
 			Statement stmt = con.createStatement();
