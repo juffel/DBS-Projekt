@@ -20,6 +20,9 @@ public class TestConnection {
 			
 			System.out.println("Tabelle erfolgreich erstellt");
 			
+			System.out.println("Beende Testfunktion");
+			
+			System.exit(0);		
 			
 			
 			
