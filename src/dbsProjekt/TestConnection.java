@@ -27,29 +27,17 @@ public class TestConnection {
 			
 			ResultSet res = stmt.executeQuery("SELECT * FROM Veranstalter;");
 			
-		// hoffentlich gibts eine schönere Methode Ergebnisse von Queries auszuwerten...
-			int i = 0;
-			while(!res.isLast()) {
-				i++;
-				System.out.println(res.getNString(i));
-				res.next();
-			}
-			
-			if(i==0) {
-				System.out.println("Einfügen von Zeilen bzw. Abfragen war nicht erfolgreich.");
-			}
-			else {
-				System.out.println("Einfügen war vmtl. erfolgreich!");
+			while(res.next()) {
+				String AG = res.getString("Arbeitsgruppe");
+				String Ins = res.getString("Institut");
+				String FB = res.getString("Fachbereich");
+				String Km = res.getString("Kommentar");
+				
+				System.out.println(AG + "\t" + Ins + "\t" + FB + "\t" + Km);
+				
 			}
 			
 			stmt.executeUpdate("DROP TABLE Veranstalter;");
-			
-			res = stmt.executeQuery("SELECT * FROM Veranstalter;");
-			
-			if(res.getString(0).equals("ERROR:  relation \"veranstaltung\" does not exist")) {
-				System.out.println("Tabelle erfolgreich gelöscht");
-			} else
-				System.out.println("Löschung nicht erfolgreich");
 			
 			System.out.println("Beende Testfunktion");
 			
