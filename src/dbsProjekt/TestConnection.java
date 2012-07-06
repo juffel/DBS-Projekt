@@ -1,18 +1,16 @@
 package dbsProjekt;
 
-import java.sql.Connection;
+//import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TestConnection {
 	
 	public void test() {
-		
-		ImportData tmp = new ImportData();
-		Connection con = tmp.openConnection("localhost", "5432", "testDB", "testuser", "password");
+		Connection connection = new Connection("localhost", "5432", "testDB", "testuser", "password");
 		
 		try {
-			Statement stmt = con.createStatement();
+			Statement stmt = connection.get().createStatement();
 			
 			stmt.executeQuery("CREATE TABLE Veranstalter (" +
 										"Arbeitsgruppe varchar(255)," +
