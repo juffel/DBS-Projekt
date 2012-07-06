@@ -5,8 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TestConnection {
-	
-	public void test() {
+	public static void test() {
 		Connection connection = new Connection("localhost", "5432", "testDB", "testuser", "password");
 		
 		try {
