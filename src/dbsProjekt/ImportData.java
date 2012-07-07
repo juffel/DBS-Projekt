@@ -37,23 +37,75 @@ public class ImportData {
 		try {
 			
 			// die Datei Zeichen für Zeichen auslesen
-			int c;
-			StringBuffer buf = new StringBuffer();
+			int character, previous = 0;
+			StringBuffer buf = new StringBuffer(0);
 			
 			// und die einzelnen Queries zusammenfassen, also immer bis zu einem Semikolons
-			while((c = rdr.read()) != -1) {
+			while((character = rdr.read()) != -1) {
+				
+				char c = (char) character;
 
-				if(c == 59) { // ascii 59 = ';'
+				switch (c) {
+				
+				case ';':
 					
+					buf.append(';');
 					queries.add(buf.toString()); // Query in queries abheften
-					buf.delete(0, buf.length()); // und Buffer reseten
+					buf = new StringBuffer(0); // und Buffer reseten
 					
-				} else {
+					previous = 0;
+					break;
+					
+				case '-':
+					
+					if(((char) previous) == '-') {
+						previous = 0;
+						buf.deleteCharAt(buf.length()-1);
+						rdr.readLine();
+					}
+					else {
+						buf.append('-');
+						previous = character;
+					}
+					
+					break;
+
+				case '*':
+					
+					if(((char) previous) == '/') {
+						previous = 0;
+						buf.deleteCharAt(buf.length()-1);
+						rdr.readLine();
+						// TODO das stimmt so noch nicht, es muss nicht nur die nächste Zeile verschluckt werden, sondern bis zum nächsten '*/'
+					}
+					else {
+						buf.append('*');
+						previous = character;
+					}
+					
+					break;
+					
+				case Character.LINE_SEPARATOR:
+
+					previous = 0;
+					break;
+					
+				case ' ':
+					if(((char) previous) != ' ') {
+						buf.append(' ');
+					}
+
+					previous = character;
+					break;
+					
+				default:
 					
 					buf.append((char) c);
-					
+
+					previous = character;
+					break;
 				}
-				
+								
 			}
 			
 		} catch (IOException e) {
@@ -61,9 +113,14 @@ public class ImportData {
 		}
 		
 		// Queries ausgeben
-		for(String s:queries) {
-			System.out.println(s);
+		
+		for(int i = 0; i < 30; i++) {
+			System.out.println(queries.get(i));
 		}
+		
+		/* for(String s:queries) {
+			System.out.println(s);
+		} */
 
 		
 	}
