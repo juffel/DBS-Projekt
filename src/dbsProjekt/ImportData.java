@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 
 /**
@@ -13,6 +15,23 @@ import java.util.LinkedList;
  *
  */
 public class ImportData {
+	
+	public void initEasy(String path) {
+		
+		Connection con = new Connection("localhost", "5432", "lndw", "testuser", "password");
+		
+		Statement stmt;
+		
+		try {
+			
+			stmt = con.get().createStatement();
+			stmt.executeUpdate("\\i " + path);
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 	
 	/**
 	 * erstellt eine neue Datenbank, auf welcher ein in der Datei file abgelegter SQL-Query ausgeführt wird
