@@ -92,7 +92,6 @@ public class ImportData {
 		
 		// TODO dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
 		
-		
 		// Queries an die DB schicken
 		try {
 			

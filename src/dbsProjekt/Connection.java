@@ -35,6 +35,7 @@ public class Connection {
 		
 		try{
 			// Verbindung zur Datenbank herstellen
+			
 			connection = DriverManager.getConnection("jdbc:postgresql://" + server + ":" + port + "/" + name, user , password);
 		}
 		catch (SQLException sqle){
