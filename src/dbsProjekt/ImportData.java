@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 
 /**
@@ -37,72 +39,43 @@ public class ImportData {
 		try {
 			
 			// die Datei Zeichen für Zeichen auslesen
-			int character, previous = 0;
+			int character = 0;
+			boolean prev_semikolon = false;
 			StringBuffer buf = new StringBuffer(0);
 			
-			// und die einzelnen Queries zusammenfassen, also immer bis zu einem Semikolons
+			// und die einzelnen Queries zusammenfassen
+			// immer wenn ein newline-Zeichen auf ein Semikolon folgt wird das als Ende eines Statements betrachtet
 			while((character = rdr.read()) != -1) {
 				
-				char c = (char) character;
+				char c = (char) character;			
 
 				switch (c) {
 				
 				case ';':
 					
+					prev_semikolon = true;
 					buf.append(';');
-					queries.add(buf.toString()); // Query in queries abheften
-					buf = new StringBuffer(0); // und Buffer reseten
-					
-					previous = 0;
 					break;
 					
-				case '-':
+				case '\n':
+
+					buf.append('\n');
 					
-					if(((char) previous) == '-') {
-						previous = 0;
-						buf.deleteCharAt(buf.length()-1);
-						rdr.readLine();
-					}
-					else {
-						buf.append('-');
-						previous = character;
+					if(prev_semikolon) {
+
+						queries.add(buf.toString()); // Query in queries abheften
+						buf = new StringBuffer(0); // und Buffer reseten
+						
 					}
 					
+					prev_semikolon = false;
 					break;
 
-				case '*':
-					
-					if(((char) previous) == '/') {
-						previous = 0;
-						buf.deleteCharAt(buf.length()-1);
-						rdr.readLine();
-						// TODO das stimmt so noch nicht, es muss nicht nur die nächste Zeile verschluckt werden, sondern bis zum nächsten '*/'
-					}
-					else {
-						buf.append('*');
-						previous = character;
-					}
-					
-					break;
-					
-				case Character.LINE_SEPARATOR:
-
-					previous = 0;
-					break;
-					
-				case ' ':
-					if(((char) previous) != ' ') {
-						buf.append(' ');
-					}
-
-					previous = character;
-					break;
-					
 				default:
 					
+					prev_semikolon = false;
 					buf.append((char) c);
 
-					previous = character;
 					break;
 				}
 								
@@ -112,18 +85,32 @@ public class ImportData {
 			e.printStackTrace();
 		}
 		
-		// Queries ausgeben
 		
-		for(int i = 0; i < 30; i++) {
-			System.out.println(queries.get(i));
+		// Verbindung zur DB aufbauen
+		Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
+		
+		
+		// TODO dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
+		
+		
+		// Queries an die DB schicken
+		try {
+			
+			Statement stmt = con.get().createStatement();
+			
+			for(String s:queries) {
+				
+				System.out.print("Executing \"" + s + "\"");
+				stmt.executeUpdate(s);
+				System.out.println("...done");
+			
+			}
 		}
 		
-		/* for(String s:queries) {
-			System.out.println(s);
-		} */
-
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
-
 }
