@@ -10,11 +10,11 @@ public class Main {
 		}
 		
 		ImportData imp = new ImportData();
-<<<<<<< HEAD
+
 		imp.init("/home/andre/lange_nacht_postgres.sql");
-=======
+
 		imp.init(args[0]);
->>>>>>> c1467ed8f23fbed2521347e62cc7144e147d9316
+
 		
 	}
 
