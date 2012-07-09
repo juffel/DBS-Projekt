@@ -91,12 +91,12 @@ public class ImportData {
 		
 		
 		// TODO dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
-		
-		// Queries an die DB schicken
+		Statement stmt;
 		try {
+			stmt = con.get().createStatement();
+			stmt.executeUpdate("CREATE DATABASE lndw;");
 			
-			Statement stmt = con.get().createStatement();
-			
+			// Queries an die DB schicken
 			for(String s:queries) {
 				
 				System.out.print("Executing \"" + s + "\"");
@@ -104,11 +104,15 @@ public class ImportData {
 				System.out.println("...done");
 			
 			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
+		
+				
+		
+		
 		
 	}
 	
