@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public class Connection {
 	
-	private java.sql.Connection connection;
 	
-	public java.sql.Connection get() { return connection; }
+	private java.sql.Connection connection;
+
 	
 	/**
 	 * baut Verbindung zur angegebenen Datenbank auf
@@ -50,4 +50,10 @@ public class Connection {
 		// Verbindung konnte hergestellt werden!
 		System.out.println("Die Verbingung zur Datenbank wurde hergestellt.");
 	}
+	
+	
+	public java.sql.Connection get() {
+		return connection;
+	}
+	
 }

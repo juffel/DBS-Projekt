@@ -85,18 +85,29 @@ public class ImportData {
 			e.printStackTrace();
 		}
 		
-		
-		// Verbindung zur DB aufbauen
-		Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
-		
-		
-		// TODO dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
-		Statement stmt;
+
+		// dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
 		try {
-			stmt = con.get().createStatement();
+
+			// Verbindung zur DB aufbauen
+			Connection con = new Connection("localhost", "5432", "template1", "user", "password");
+			
+			Statement stmt = con.get().createStatement();
+			stmt.executeUpdate("DROP DATABASE IF EXISTS lndw;");
 			stmt.executeUpdate("CREATE DATABASE lndw;");
 			
-			// Queries an die DB schicken
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		// Queries an die DB schicken, dafür neue Verbindung mit Benutzernamen aufbauen
+		try {
+			
+			Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
+			Statement stmt = con.get().createStatement();
+			
 			for(String s:queries) {
 				
 				System.out.print("Executing \"" + s + "\"");
@@ -104,15 +115,11 @@ public class ImportData {
 				System.out.println("...done");
 			
 			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			
 		}
-		
-		
-				
-		
-		
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

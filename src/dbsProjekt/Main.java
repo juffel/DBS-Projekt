@@ -10,9 +10,7 @@ public class Main {
 		}
 		
 		ImportData imp = new ImportData();
-
-		imp.init("/home/andre/lange_nacht_postgres.sql");
-
+		
 		imp.init(args[0]);
 
 		
