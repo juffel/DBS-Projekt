@@ -139,7 +139,8 @@ public class ProjektDB {
 				System.out.println("cannot create Tables, connection to database closed");
 			}
 			
-			// TODO Create Tables
+			// Create Tables
+			stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,veranstalter_id uuid);");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
