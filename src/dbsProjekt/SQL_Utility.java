@@ -6,6 +6,10 @@ import java.sql.SQLException;
 
 public class SQL_Utility {
 	
+	/**
+	 * Methode um ein ResultSet auf der Kommandozeile auszugeben
+	 * @throws SQLException
+	 */
 	public static void printResultSet(ResultSet res) throws SQLException {
 		
 		ResultSetMetaData rsmd = res.getMetaData();
