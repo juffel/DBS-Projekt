@@ -40,9 +40,11 @@ public class ImportData {
 			
 			// die Datei Zeichen für Zeichen auslesen
 			int character = 0;
+			boolean prev_semikolon = false;
 			StringBuffer buf = new StringBuffer(0);
 			
-			// und die einzelnen Queries zusammenfassen, also immer bis zu einem Semikolon
+			// und die einzelnen Queries zusammenfassen
+			// immer wenn ein newline-Zeichen auf ein Semikolon folgt wird das als Ende eines Statements betrachtet
 			while((character = rdr.read()) != -1) {
 				
 				char c = (char) character;			
@@ -51,19 +53,27 @@ public class ImportData {
 				
 				case ';':
 					
+					prev_semikolon = true;
 					buf.append(';');
-					queries.add(buf.toString()); // Query in queries abheften
-					buf = new StringBuffer(0); // und Buffer reseten
-					
 					break;
 					
-				case Character.LINE_SEPARATOR:
+				case '\n':
 
-					buf.append(Character.LINE_SEPARATOR);
+					buf.append('\n');
+					
+					if(prev_semikolon) {
+
+						queries.add(buf.toString()); // Query in queries abheften
+						buf = new StringBuffer(0); // und Buffer reseten
+						
+					}
+					
+					prev_semikolon = false;
 					break;
 
 				default:
 					
+					prev_semikolon = false;
 					buf.append((char) c);
 
 					break;
