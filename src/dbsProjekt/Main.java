@@ -9,7 +9,7 @@ public class Main {
 			System.exit(0);
 		}
 		
-		ImportData imp = new ImportData();
+		ProjektDB imp = new ProjektDB();
 		
 		imp.init(args[0]);
 
