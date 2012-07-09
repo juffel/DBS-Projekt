@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
@@ -142,10 +143,26 @@ public class ProjektDB {
 			// Create Tables
 			stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,veranstalter_id uuid);");
 			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
 		
+	}
+	
+	/**
+	 * extrahiert die Daten aus dem großen red_table und fügt sie in die jeweiligen Tabellen ein
+	 */
+	public void fillTables() throws SQLException {
+	
+		if(con.get().isClosed()) {
+			System.out.println("cannot fill Tables, connection to database closed");
+		}
+		
+		ResultSet res_veranstalter = stmt.executeQuery("SELECT FROM lp_red_table;");
+		ResultSet res_veranstaltung = stmt.executeQuery("SELECT FROM lp_red_table;");
+		ResultSet res_ort = stmt.executeQuery("SELECT FROM lp_red_table;");
+	
 	}
 	
 }

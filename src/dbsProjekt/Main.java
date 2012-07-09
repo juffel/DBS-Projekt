@@ -12,7 +12,7 @@ public class Main {
 		ProjektDB imp = new ProjektDB();
 		
 		imp.init(args[0]);
-
+		imp.createTables();
 		
 	}
 
