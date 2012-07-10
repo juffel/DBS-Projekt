@@ -1,5 +1,7 @@
 package dbsProjekt;
 
+import java.sql.SQLException;
+
 public class Main {
 	
 	public static void main(String args[]) {
@@ -13,6 +15,7 @@ public class Main {
 		
 		imp.init(args[0]);
 		imp.createTables();
+		try {imp.fillTables();}catch(SQLException e){}
 		
 	}
 
