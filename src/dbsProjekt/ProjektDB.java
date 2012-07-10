@@ -130,8 +130,8 @@ public class ProjektDB {
 		// Create Tables
 
 		stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,lp_pa_notes text,veranstalter_id uuid);");
-		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint);");
-		stmt.executeUpdate("create table veranstaltung (lp_title text,lp_lndw_year varchar(4),lp_user_comment text,lp_content_short text,lp_start_time time,lp_end_time time,lp_continuous smallint,lp_period int,lp_time_necessary int,lp_time_is_recommended smallint,lp_time_comment text,lp_signingdate timestamp,lp_kinderprogramm smallint);");
+		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint, ort_id uuid);");
+		stmt.executeUpdate("create table veranstaltung (lp_title text,lp_lndw_year varchar(4),lp_user_comment text,lp_content_short text,lp_start_time time,lp_end_time time,lp_continuous smallint,lp_period int,lp_time_necessary int,lp_time_is_recommended smallint,lp_time_comment text,lp_signingdate timestamp,lp_kinderprogramm smallint, veranstaltung_id uuid);");
 		
 		System.out.println("done.");
 	}
@@ -189,13 +189,12 @@ public class ProjektDB {
 		
 		// fülle veranstaltung tabelle
 		LinkedList<String> veranstaltungList = new LinkedList<String>();
-		res = stmt.executeQuery("SELECT  lp_title , lp_lndw_year , lp_user_comment , lp_content_short , lp_start_time , lp_end_time , lp_continuous , lp_period , lp_time_necessary , lp_time_is_recommended, lp_time_comment , lp_signingdate, lp_kinderprogramm FROM lp_red_table;");
-		
+		res = stmt.executeQuery("SELECT  lp_title, lp_lndw_year, lp_user_comment, lp_content_short, lp_start_time, lp_end_time, lp_continuous, lp_period, lp_time_necessary, lp_time_is_recommended, lp_time_comment, lp_signingdate, lp_kinderprogramm FROM lp_red_table;");
 		while(res.next()) {
 			
 			StringBuffer tmp = new StringBuffer();
 			
-			for(int i = 1; i < 5; i++) {
+			for(int i = 1; i < 14; i++) {
 				tmp.append("'");
 				tmp.append(res.getString(i));
 				tmp.append("',");
@@ -207,7 +206,7 @@ public class ProjektDB {
 		}
 		
 		k = 0;
-		for(String s:veranstalterList) {
+		for(String s:veranstaltungList) {
 			
 			if(k%80 == 0) 
 				System.out.print("\n");
@@ -216,7 +215,7 @@ public class ProjektDB {
 			stmt.executeUpdate(s);
 			k++;
 		}
-		System.out.println("veranstaltun table done.");
+		System.out.println("veranstaltung table done.");
 		
 		
 		// fülle ort tabelle
@@ -227,7 +226,7 @@ public class ProjektDB {
 			
 			StringBuffer tmp = new StringBuffer();
 			
-			for(int i = 1; i < 5; i++) {
+			for(int i = 1; i < 9; i++) {
 				tmp.append("'");
 				tmp.append(res.getString(i));
 				tmp.append("',");
@@ -239,7 +238,7 @@ public class ProjektDB {
 		}
 		
 		k = 0;
-		for(String s:veranstalterList) {
+		for(String s:ortList) {
 			
 			if(k%80 == 0) 
 				System.out.print("\n");
