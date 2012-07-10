@@ -125,8 +125,8 @@ public class ProjektDB {
 		if(con == null) {
 			System.out.println("cannot create Tables, no connection to database");
 			return;
-		}
-			
+		} 
+		
 		// Create Tables
 
 		stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,lp_pa_notes text,veranstalter_id uuid);");
@@ -150,28 +150,109 @@ public class ProjektDB {
 			return;
 		}
 		
-		ResultSet res_veranstalter = stmt.executeQuery("SELECT lp_pa_name, lp_pa_i_name, lp_pa_i_fb_name, lp_pa_notes FROM lp_red_table;");
-		ResultSet res_veranstaltung = stmt.executeQuery("SELECT lp_fp_street, lp_fp_nr, lp_fp_location, lp_fp_plz, lp_fp_city, lp_fp_name, lp_fp_cashplace, lp_fp_barrierfree FROM lp_red_table;");
-		ResultSet res_ort = stmt.executeQuery("SELECT lp_title, lp_lndw_year, lp_user_comment, lp_content_short, lp_start_time, lp_end_time, lp_continuous, lp_period, lp_time_necessary, lp_time_is_recommended, lp_time_comment, lp_signingdate, lp_kinderprogramm FROM lp_red_table;");
 
+
+		ResultSet res;
 		
 		// fülle veranstalter tabelle
-		while(res_veranstalter.next()) {
+		LinkedList<String> veranstalterList = new LinkedList<String>();
+		res = stmt.executeQuery("SELECT lp_pa_name, lp_pa_i_name, lp_pa_i_fb_name, lp_pa_notes FROM lp_red_table;");
+		
+		while(res.next()) {
 			
 			StringBuffer tmp = new StringBuffer();
 			
-			for(int i = 0; i < 5; i++) {
-				tmp.append(res_veranstalter.getString(i));
+			for(int i = 1; i < 5; i++) {
+				tmp.append("'");
+				tmp.append(res.getString(i));
+				tmp.append("',");
 			}
+			tmp.delete(tmp.length()-1, tmp.length());
 			
-			stmt.executeUpdate("INSERT INTO veranstalter VALUES (" + tmp + UUID.randomUUID() + ");");
+			veranstalterList.add("INSERT INTO veranstalter VALUES (" + tmp + ",'" + UUID.randomUUID() + "'" + ");");
+
 		}
 		
-		// fülle veranstaltungs tabelle
+		int k = 0;
+		for(String s:veranstalterList) {
+			
+			if(k%80 == 0) 
+				System.out.print("\n");
+			else
+				System.out.print('.');
+			stmt.executeUpdate(s);
+			k++;
+			
+		}
+		System.out.println("veranstalter table done.");
+		
+		
+		// fülle veranstaltung tabelle
+		LinkedList<String> veranstaltungList = new LinkedList<String>();
+		res = stmt.executeQuery("SELECT  lp_title , lp_lndw_year , lp_user_comment , lp_content_short , lp_start_time , lp_end_time , lp_continuous , lp_period , lp_time_necessary , lp_time_is_recommended, lp_time_comment , lp_signingdate, lp_kinderprogramm FROM lp_red_table;");
+		
+		while(res.next()) {
+			
+			StringBuffer tmp = new StringBuffer();
+			
+			for(int i = 1; i < 5; i++) {
+				tmp.append("'");
+				tmp.append(res.getString(i));
+				tmp.append("',");
+			}
+			tmp.delete(tmp.length()-1, tmp.length());
+			
+			veranstaltungList.add("INSERT INTO veranstaltung VALUES (" + tmp + ",'" + UUID.randomUUID() + "'" + ");");
+
+		}
+		
+		k = 0;
+		for(String s:veranstalterList) {
+			
+			if(k%80 == 0) 
+				System.out.print("\n");
+			else
+				System.out.print('.');
+			stmt.executeUpdate(s);
+			k++;
+		}
+		System.out.println("veranstaltun table done.");
+		
 		
 		// fülle ort tabelle
-	
-		System.out.println("done.");
+		LinkedList<String> ortList = new LinkedList<String>();
+		res = stmt.executeQuery("SELECT lp_fp_street, lp_fp_nr, lp_fp_location, lp_fp_plz, lp_fp_city, lp_fp_name, lp_fp_cashplace, lp_fp_barrierfree FROM lp_red_table;");
+		
+		while(res.next()) {
+			
+			StringBuffer tmp = new StringBuffer();
+			
+			for(int i = 1; i < 5; i++) {
+				tmp.append("'");
+				tmp.append(res.getString(i));
+				tmp.append("',");
+			}
+			tmp.delete(tmp.length()-1, tmp.length());
+			
+			ortList.add("INSERT INTO ort VALUES (" + tmp + ",'" + UUID.randomUUID() + "'" + ");");
+
+		}
+		
+		k = 0;
+		for(String s:veranstalterList) {
+			
+			if(k%80 == 0) 
+				System.out.print("\n");
+			else
+				System.out.print('.');
+			stmt.executeUpdate(s);
+			k++;
+		}
+		System.out.println("ort table done.");
+		
+		
+		System.out.println("filling tables done.");
+		
 	}
 	
 }
