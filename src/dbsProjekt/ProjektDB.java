@@ -26,7 +26,7 @@ public class ProjektDB {
 	 * erstellt eine neue Datenbank, auf welcher ein in der Datei file abgelegter SQL-Query ausgeführt wird
 	 * @param file
 	 */
-	public void init(String path) {
+	public void init(String path) throws SQLException {
 		
 		File input = new File(path);
 		BufferedReader rdr;
@@ -42,89 +42,72 @@ public class ProjektDB {
 		
 		LinkedList<String> queries = new LinkedList<String>();
 		
+		// die Datei Zeichen für Zeichen auslesen
+		int character = 0;
+		boolean prev_semikolon = false;
+		StringBuffer buf = new StringBuffer(0);
+		
+		// und die einzelnen Queries zusammenfassen
+		// immer wenn ein newline-Zeichen auf ein Semikolon folgt wird das als Ende eines Statements betrachtet
 		try {
 			
-			// die Datei Zeichen für Zeichen auslesen
-			int character = 0;
-			boolean prev_semikolon = false;
-			StringBuffer buf = new StringBuffer(0);
-			
-			// und die einzelnen Queries zusammenfassen
-			// immer wenn ein newline-Zeichen auf ein Semikolon folgt wird das als Ende eines Statements betrachtet
 			while((character = rdr.read()) != -1) {
-				
+			
 				char c = (char) character;			
-
-				switch (c) {
 				
+				switch (c) {
+			
 				case ';':
-					
+				
 					prev_semikolon = true;
 					buf.append(';');
 					break;
-					
+				
 				case '\n':
-
+				
 					buf.append('\n');
-					
+				
 					if(prev_semikolon) {
-
 						queries.add(buf.toString()); // Query in queries abheften
 						buf = new StringBuffer(0); // und Buffer reseten
-						
 					}
-					
 					prev_semikolon = false;
 					break;
-
+				
 				default:
-					
+				
 					prev_semikolon = false;
 					buf.append((char) c);
-
-					break;
+						break;
+					
 				}
-								
 			}
-			
-		} catch (IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
-		}
-		
-
-		// dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
-		try {
-
-			// Verbindung zur DB aufbauen
-			con = new Connection("localhost", "5432", "template1", "user", "password");
-			
-			stmt = con.get().createStatement();
-			stmt.executeUpdate("DROP DATABASE IF EXISTS lndw;");
-			stmt.executeUpdate("CREATE DATABASE lndw;");
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
 			return;
 		}
+
+		// dafür sorgen, dass eine frische Datenbank mit dem Namen lndw angelegt wird.
+
+		// Verbindung zur DB aufbauen
+		con = new Connection("localhost", "5432", "template1", "user", "password");
+			
+		stmt = con.get().createStatement();
+		stmt.executeUpdate("DROP DATABASE IF EXISTS lndw;");
+		stmt.executeUpdate("CREATE DATABASE lndw;");
 		
 		
 		// Queries an die DB schicken, dafür neue Verbindung mit Benutzernamen aufbauen
-		try {
 			
-			con = new Connection("localhost", "5432", "lndw", "user", "password");
-			stmt = con.get().createStatement();
+		con = new Connection("localhost", "5432", "lndw", "user", "password");
+		stmt = con.get().createStatement();
 			
-			for(String s:queries) {
+		for(String s:queries) {
 				
-				System.out.print("Executing \"" + s + "\"");
-				stmt.executeUpdate(s);
-				System.out.println("...done");
+			System.out.print("Executing \"" + s + "\"");
+			stmt.executeUpdate(s);
+			System.out.println("...done");
 			
-			}
-			
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
 		}
 		
 		System.out.println("import done.");
@@ -135,31 +118,25 @@ public class ProjektDB {
 	 * erstellt die von uns entworfenen Relationstabellen
 	 * darf erst nach init() aufgerufen werden, bzw. wenn eine Verbindung zur DB besteht
 	 */
-	public void createTables() {
+	public void createTables() throws SQLException {
 		
 		System.out.print("creating tables...");
-		
-		try {
-			
-			if(con == null) {
-				System.out.println("cannot create Tables, no connection to database");
-				return;
-			}
-			
-			// Create Tables
 
-			stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,lp_pa_notes text,veranstalter_id uuid);");
-			stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint);");
-			stmt.executeUpdate("create table veranstaltung (lp_title text,lp_lndw_year varchar(4),lp_user_comment text,lp_content_short text,lp_start_time time,lp_end_time time,lp_continuous smallint,lp_period int,lp_time_necessary int,lp_time_is_recommended smallint,lp_time_comment text,lp_signingdate timestamp,lp_kinderprogramm smallint);");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(con == null) {
+			System.out.println("cannot create Tables, no connection to database");
 			return;
 		}
+			
+		// Create Tables
+
+		stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,lp_pa_notes text,veranstalter_id uuid);");
+		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint);");
+		stmt.executeUpdate("create table veranstaltung (lp_title text,lp_lndw_year varchar(4),lp_user_comment text,lp_content_short text,lp_start_time time,lp_end_time time,lp_continuous smallint,lp_period int,lp_time_necessary int,lp_time_is_recommended smallint,lp_time_comment text,lp_signingdate timestamp,lp_kinderprogramm smallint);");
 		
 		System.out.println("done.");
-		
 	}
+	
+	
 	
 	/**
 	 * extrahiert die Daten aus dem großen red_table und fügt sie in die jeweiligen Tabellen ein

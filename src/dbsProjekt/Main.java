@@ -13,9 +13,16 @@ public class Main {
 		
 		ProjektDB imp = new ProjektDB();
 		
-		imp.init(args[0]);
-		imp.createTables();
-		try {imp.fillTables();}catch(SQLException e){}
+
+		try {
+			
+			imp.init(args[0]);
+			imp.createTables();			
+			imp.fillTables();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 		
 	}
 
