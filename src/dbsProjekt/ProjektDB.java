@@ -136,6 +136,7 @@ public class ProjektDB {
 		System.out.println("done.");
 	}
 	
+
 	
 	
 	/**
@@ -150,104 +151,28 @@ public class ProjektDB {
 			return;
 		}
 		
-
-
-		ResultSet res;
-		
 		// fülle veranstalter tabelle
-		LinkedList<String> veranstalterList = new LinkedList<String>();
-		res = stmt.executeQuery("SELECT lp_pa_name, lp_pa_i_name, lp_pa_i_fb_name, lp_pa_notes FROM lp_red_table;");
+		String[] veranstalter_fields = {"lp_pa_name", "lp_pa_i_name", "lp_pa_i_fb_name", "lp_pa_notes"};
+		SQL_Utility.fillTableWith(con, "veranstalter", SQL_Utility.getFromTable(con, "lp_red_table", veranstalter_fields));
 		
-		while(res.next()) {
-			
-			StringBuffer tmp = new StringBuffer();
-			
-			for(int i = 1; i < 5; i++) {
-				tmp.append("'");
-				tmp.append(res.getString(i));
-				tmp.append("',");
-			}
-			tmp.delete(tmp.length()-1, tmp.length());
-			
-			veranstalterList.add("INSERT INTO veranstalter VALUES (" + tmp + ",'" + UUID.randomUUID() + "'" + ");");
-
-		}
-		
-		int k = 0;
-		for(String s:veranstalterList) {
-			
-			if(k%80 == 0) 
-				System.out.print("\n");
-			else
-				System.out.print('.');
-			stmt.executeUpdate(s);
-			k++;
-			
-		}
 		System.out.println("veranstalter table done.");
 		
 		
-		// fülle veranstaltung tabelle
-		LinkedList<String> veranstaltungList = new LinkedList<String>();
-		res = stmt.executeQuery("SELECT  lp_title, lp_lndw_year, lp_user_comment, lp_content_short, lp_start_time, lp_end_time, lp_continuous, lp_period, lp_time_necessary, lp_time_is_recommended, lp_time_comment, lp_signingdate, lp_kinderprogramm FROM lp_red_table;");
-		while(res.next()) {
-			
-			StringBuffer tmp = new StringBuffer();
-			
-			for(int i = 1; i < 14; i++) {
-				tmp.append("'");
-				tmp.append(res.getString(i));
-				tmp.append("',");
-			}
-			tmp.delete(tmp.length()-1, tmp.length());
-			
-			veranstaltungList.add("INSERT INTO veranstaltung VALUES (" + tmp + ",'" + UUID.randomUUID() + "'" + ");");
-
-		}
-		
-		k = 0;
-		for(String s:veranstaltungList) {
-			
-			if(k%80 == 0) 
-				System.out.print("\n");
-			else
-				System.out.print('.');
-			stmt.executeUpdate(s);
-			k++;
-		}
-		System.out.println("veranstaltung table done.");
-		
-		
 		// fülle ort tabelle
-		LinkedList<String> ortList = new LinkedList<String>();
-		res = stmt.executeQuery("SELECT lp_fp_street, lp_fp_nr, lp_fp_location, lp_fp_plz, lp_fp_city, lp_fp_name, lp_fp_cashplace, lp_fp_barrierfree FROM lp_red_table;");
+		String[] ort_fields = {"lp_fp_street", "lp_fp_nr", "lp_fp_location", "lp_fp_plz", "lp_fp_city", "lp_fp_name", "lp_fp_cashplace", "lp_fp_barrierfree"};
+		SQL_Utility.fillTableWith(con, "ort", SQL_Utility.getFromTable(con, "lp_red_table", ort_fields));
 		
-		while(res.next()) {
-			
-			StringBuffer tmp = new StringBuffer();
-			
-			for(int i = 1; i < 9; i++) {
-				tmp.append("'");
-				tmp.append(res.getString(i));
-				tmp.append("',");
-			}
-			tmp.delete(tmp.length()-1, tmp.length());
-			
-			ortList.add("INSERT INTO ort VALUES (" + tmp + ",'" + UUID.randomUUID() + "'" + ");");
-
-		}
-		
-		k = 0;
-		for(String s:ortList) {
-			
-			if(k%80 == 0) 
-				System.out.print("\n");
-			else
-				System.out.print('.');
-			stmt.executeUpdate(s);
-			k++;
-		}
 		System.out.println("ort table done.");
+		
+		
+		// fülle veranstaltung tabelle
+		String[] veranstaltung_fields = {"lp_title", "lp_lndw_year", "lp_user_comment", "lp_content_short", "lp_start_time", "lp_end_time", "lp_continuous", "lp_period", "lp_time_necessary", "lp_time_is_recommended", "lp_time_comment", "lp_signingdate", "lp_kinderprogramm"};
+		SQL_Utility.fillTableWith(con, "veranstaltung", SQL_Utility.getFromTable(con, "lp_red_table", veranstaltung_fields));
+		
+		System.out.println("veranstaltung table done.");
+
+		
+		// UUIDs hinzufügen
 		
 		
 		System.out.println("filling tables done.");
