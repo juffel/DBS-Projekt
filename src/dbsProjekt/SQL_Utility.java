@@ -90,7 +90,7 @@ public class SQL_Utility {
 			buf.delete(buf.length()-1, buf.length());
 			
 			String tmp = "INSERT INTO " + table + " VALUES (" + buf.toString() + ");";
-			System.out.println(tmp);
+//			System.out.println(tmp);
 			stmt.executeUpdate(tmp);
 			
 		}
