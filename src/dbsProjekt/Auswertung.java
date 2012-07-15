@@ -50,7 +50,7 @@ public class Auswertung {
 		}
 		
 		for(Triple<String, String, Double> tr:ret) {	
-			System.out.println(tr.toString());	
+			System.out.println(tr.getValue1() + " <-> " + tr.getValue2() + ": " + tr.getValue3().toString().substring(0, 4) + " km");	
 		}
 		
 		return ret;
