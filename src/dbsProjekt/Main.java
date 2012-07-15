@@ -16,7 +16,7 @@ public class Main {
 		try {
 			
 //			imp.init(args[0]);
-//			imp.createTables();			
+//			imp.createTables();		
 //			imp.fillTables(args[0]);
 			
 			Connection con = new Connection("localhost", "5432", "lndw", "user", "password");

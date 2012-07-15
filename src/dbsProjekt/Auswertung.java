@@ -49,8 +49,10 @@ public class Auswertung {
 			
 		}
 		
-		for(Triple<String, String, Double> tr:ret) {	
-			System.out.println(tr.getValue1() + " <-> " + tr.getValue2() + ": " + tr.getValue3().toString().substring(0, 4) + " km");	
+		System.out.printf("%-27s %-27s %-5s%n", "Ort2", "Ort2", "Entfernung");
+		
+		for(Triple<String, String, Double> tr:ret) {
+			System.out.printf("%-27s %-27s %5fkm %n", tr.getValue1(), tr.getValue2(), (double) tr.getValue3());
 		}
 		
 		return ret;
@@ -68,27 +70,31 @@ public class Auswertung {
 			
 			for(Integer j = i; j <= 2012; j++) {
 				
-				LinkedList<Triple<String, String, String>> tmp = fetchVisitorData(con, i.toString(), j.toString());
-				System.out.println("Besucherzahlen für die Jahre " + i + " " + j + ":\n");
-				
-				for(Triple<String, String, String> tr : tmp) {
+				LinkedList<Triple<String, Integer, Integer>> tmp = fetchVisitorData(con, i.toString(), j.toString());
+				// System.out.println("Besucherzahlen für die Jahre " + i + " " + j + ":\n");
+				System.out.printf("%20s Besucher %4s %4s %4s %n", "Veranstaltungsname", i, j, "Differenz");
+				for(Triple<String, Integer, Integer> tr : tmp) {
 					
-					int value1 = Integer.parseInt(tr.getValue2());
-					int value2 = Integer.parseInt(tr.getValue3());
+					int value1 = tr.getValue2();
+					int value2 = tr.getValue3();
 					
-					System.out.print(tr.getValue1() +": "+ value1 +", "+ value2);
+					// System.out.print(tr.getValue1() +": "+ value1 +", "+ value2);
+					System.out.printf("%20s Besucher %4s %4s", tr.getValue1(), tr.getValue2(), tr.getValue3());
 					
 					
 					if(value1 > value2)  {
-						System.out.print(" - " + ((Integer) (value1-value2)).toString());
+						// System.out.print(" - " + ((Integer) (value1-value2)).toString());
+						System.out.printf("- %4d%n", value1-value2);
 					}
 					
 					else if(value1 < value2) {
-						System.out.print(" + " + ((Integer) (value1-value2)).toString());
+						// System.out.print(" + " + ((Integer) (value1-value2)).toString());
+						System.out.printf("+ %4d%n", value1-value2);
 					}
 					
 					else {
-						System.out.print(" = "  + ((Integer) (value1-value2)).toString());
+						// System.out.print(" = "  + ((Integer) (value1-value2)).toString());
+						System.out.printf("= %4d%n", value1-value2);
 					}
 					
 					System.out.println("");
@@ -105,10 +111,11 @@ public class Auswertung {
 	
 	/**
 	 * Holt die zur Besucherzahlenauswertung benötigten Daten aus der Datenbank und verpackt sie schön in eine LinkedList
+	 * mit Einträgen der Form: | veranstaltungsname | besucherzahlJahr1 | besucherzahlJahr2 |
 	 */
-	public static LinkedList<Triple<String, String, String>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
+	public static LinkedList<Triple<String, Integer, Integer>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
 		
-		LinkedList<Triple<String, String, String>> ret = new LinkedList<Triple<String,String,String>>();
+		LinkedList<Triple<String, Integer, Integer>> ret = new LinkedList<Triple<String,Integer,Integer>>();
 		
 		try {
 			
@@ -123,9 +130,9 @@ public class Auswertung {
 			
 			while(res_besucherzahlen.next()) {
 				
-				ret.add(new Triple<String,String,String>(res_besucherzahlen.getString("lp_title"),
-													     res_besucherzahlen.getString("besucherzahl_jahr1"),
-													     res_besucherzahlen.getString("besucherzahl_jahr2")));
+				ret.add(new Triple<String,Integer,Integer>(res_besucherzahlen.getString("lp_title"),
+													     res_besucherzahlen.getInt("besucherzahl_jahr1"),
+													     res_besucherzahlen.getInt("besucherzahl_jahr2")));
 				
 			}
 			
