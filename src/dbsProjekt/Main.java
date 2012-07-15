@@ -65,7 +65,22 @@ public class Main {
 			}
 			else if(eingabe.equals("E") || eingabe.equals("e")) {
 				
-				
+				System.out.println("Programm wirklich Verlassen? (y/n)");
+				String bla = null;
+				try {
+					bla = br.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				if(bla.equals("Y") || bla.equals("y")) {
+					
+					run = false;
+					System.out.println("Auf Wiedersehen!");
+					
+				} else {
+					
+					System.out.println("Verlassen abgebrochen.");
+				}
 				
 			}
 			else {

@@ -145,7 +145,7 @@ public class ProjektDB {
 	 */
 	public void fillTables(String path) throws SQLException {
 		
-		System.out.print("filling tables...");
+		System.out.println("filling tables...");
 	
 		if(con == null) {
 			System.out.println("cannot fill Tables, no connection to database");
