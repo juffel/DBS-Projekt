@@ -5,7 +5,7 @@ package dbsProjekt;
  * Distanzberechnung mit Hilfe der Semiversus-Formel
  * es werden zwei Koordinaten als Eingabewerte benötigt
  * zurückgegeben wird ein double mit der Entfernung in Kilometern
- * Erdradium: Äquatorialradius laut aktueller Messung IERS 2003
+ * Erdradius: Äquatorialradius laut aktueller Messung IERS 2003
  */
 public class Distances {
 	 static double erdradius = 6378.1366; // IERS 2003
