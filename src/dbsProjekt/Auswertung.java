@@ -28,7 +28,7 @@ public class Auswertung {
 	 * @param con
 	 * @return
 	 */
-	private LinkedList<LinkedList<Triple<String, String, Integer>>> fetchVisitorData(Connection con) {
+	private LinkedList<LinkedList<Triple<String, String, Integer>>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
 		
 		LinkedList<LinkedList<Triple<String, String, Integer>>> ret = new LinkedList<LinkedList<Triple<String,String,Integer>>>();
 		
@@ -36,14 +36,15 @@ public class Auswertung {
 		
 		try {
 			
-//			ResultSet res_besucherzahlen = SQL_Utility.getFromTable(con, "besucherzahlen", new String[]{"*"});
-			
-			// wir wollen eine Auflistung folgender Form bekommen:
-			// |veranstaltungsID|besucherzahl|coord_w|coord_s|
-
-			String tmp = "";
-			
+			// wir wollen eine Auflistung folgender Form bekommen: |veranstaltungsID|besucherzahl|
+			// String tmp = "SELECT veranstaltung_id, besucherzahl FROM besucherzahl;" ;
+			String tmp = "(SELECT veranstaltung_id, lndw_year FROM besucherzahlen, veranstaltung WHERE lndw_year = "+ jahr1 +") INNER JOIN (" +
+					"(SELECT veranstaltung_id, lndw_year FROM besucherzahlen, veranstaltung WHERE lndw_year = "+ jahr2 +");" ;
 			ResultSet res_besucherzahlen = con.get().createStatement().executeQuery(tmp);
+			
+			SQL_Utility.printResultSet(res_besucherzahlen);
+			
+			// TODO weitermachen
 			
 		} catch(SQLException e) {
 			e.printStackTrace();

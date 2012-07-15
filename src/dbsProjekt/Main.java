@@ -16,9 +16,12 @@ public class Main {
 
 		try {
 			
-			imp.init(args[0]);
-			imp.createTables();			
-			imp.fillTables();
+//			imp.init(args[0]);
+//			imp.createTables();			
+//			imp.fillTables();
+			
+			
+			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
