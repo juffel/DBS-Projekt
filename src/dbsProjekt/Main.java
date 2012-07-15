@@ -18,10 +18,10 @@ public class Main {
 		
 		ProjektDB imp = new ProjektDB();		
 
-		System.out.println("Willkommen im DBS-Projekt von Julian Dobmann, Samuel Gfrörer und André Röhrig.");
-		System.out.println("Es wird jetzt eine neue Datenbank angelegt und initialisiert. Das kann eine Weile dauern.");	
+		System.out.println("Willkommen im DBS-Projekt von Julian Dobmann, Samuel Gfrörer und André Röhrig.\n" +
+						   "Es wird jetzt eine neue Datenbank angelegt und initialisiert.\n" +
+						   "Das kann eine Weile dauern.");	
 		
-		// init
 		try {
 			
 			imp.init(args[0]);
@@ -33,15 +33,15 @@ public class Main {
 			return;
 		}
 		
-		System.out.println("Die Initialisierung ist vollständig abgeschlossen.");
+		System.out.println("Die Initialisierung ist vollständig abgeschlossen.\n");
 				
 		boolean run = true;	
 		while(run) {
 			
 			System.out.println("Sie haben folgende Auswahlmöglichkeiten: (D|B|E)\n" +
-							   "Ausgabe aller Distanzen aller in der Datenbank enthaltenen Orte (D)\n" + 
-							   "Ausgabe der Besucherschwankungen zwischen zwei Jahren (B)\n" +
-							   "Programm verlassen (E)");
+							   "	Ausgabe aller Distanzen aller in der Datenbank enthaltenen Orte (D)\n" + 
+							   "	Ausgabe der Besucherschwankungen zwischen zwei Jahren (B)\n" +
+							   "	Programm verlassen (E)");
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			String eingabe = null;
 			
@@ -65,7 +65,7 @@ public class Main {
 					e.printStackTrace();
 					return;
 				}
-				System.out.println("done.");
+				System.out.println("done.\n");
 				
 				System.out.println("Für welche zwei Jahre möchten Sie die Differenz der Besucherzahlen betrachten?\n" +
 								   "(2008|2009|2010|2011|2012) z.B.: \"2008 2009\"");
