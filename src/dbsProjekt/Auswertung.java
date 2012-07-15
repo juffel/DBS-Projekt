@@ -2,6 +2,7 @@ package dbsProjekt;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -12,31 +13,37 @@ import java.util.LinkedList;
 
 public class Auswertung {
 	
-	public void evaluateVisitors(Connection con) {
+	/**
+	 * Dieser Methode wird als parameter eine LinkedList(Jahre) von LinkedLists(Tupel (Veranstaltung, Besucherzahl)) übergeben,
+	 * welche evaluiert werden.
+	 * @param con
+	 */
+	public void evaluateVisitors(Connection con, LinkedList<LinkedList<Tuple<String, Integer>>> list) {
 		
-		LinkedList<Tuple<String, Integer>> visitors = new LinkedList<Tuple<String, Integer>>();
-		
-		try {
-			
-			ResultSet res = SQL_Utility.getFromTable(con, "besucherzahlen", new String[]{"veranstaltung_id, besucherzahl"});
-			
-			while(res.next()) {
-				
-				visitors.add(new Tuple(res.getString("veranstaltung_id"), new Integer(res.getInt("besucherzahlen"))));	
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		for(int i = 0; i < visitors.size(); i++) {
-			
-			System.out.println(visitors.get(i).getValue1() + ", " + visitors.get(i).getValue2());
-			
-		}
+		// TODO implement
 		
 	}
 	
+	/**
+	 * Holt die zur Besucherzahlenauswertung benötigten Daten aus der Datenbank und verpackt sie schön in Listen
+	 * @param con
+	 * @return
+	 */
+	private LinkedList<LinkedList<Triple<String, String, Integer>>> fetchVisitorData(Connection con) {
+		
+		LinkedList<LinkedList<Triple<String, String, Integer>>> ret = new LinkedList<LinkedList<Triple<String,String,Integer>>>();
+		
+		// TODO implement
+		
+		return ret;
+		
+	}
+	
+	
+	
+	/**
+	 * mänsch, warum gibts keine Tupelz in java -.-
+	 */
 	private class Tuple<V, W> {
 		
 		V value1;
@@ -50,6 +57,31 @@ public class Auswertung {
 		}
 		public W getValue2() {
 			return value2;
+		}
+		
+	}
+	
+	/**
+	 * mänsch, warum gibts keine Tupelz in java -.-
+	 */
+	private class Triple<V, W, X> {
+		
+		V value1;
+		W value2;
+		X value3;
+		private Triple(V value1, W value2, X value3) {
+			this.value1 = value1;
+			this.value2 = value2;
+			this.value3 = value3;
+		}
+		public V getValue1() {
+			return value1;
+		}
+		public W getValue2() {
+			return value2;
+		}
+		public X getValue3() {
+			return value3;
 		}
 		
 	}
