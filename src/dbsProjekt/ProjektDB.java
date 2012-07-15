@@ -132,8 +132,9 @@ public class ProjektDB {
 		// Create Tables
 
 		stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,lp_pa_notes text,veranstalter_id serial PRIMARY KEY);");
-		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint, ort_id serial PRIMARY KEY, latitude double precision, longitude double precision);");
+		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint, ort_id serial PRIMARY KEY);");
 		stmt.executeUpdate("create table veranstaltung (lp_title text,lp_lndw_year varchar(4),lp_user_comment text,lp_content_short text,lp_start_time time,lp_end_time time,lp_continuous smallint,lp_period int,lp_time_necessary int,lp_time_is_recommended smallint,lp_time_comment text,lp_signingdate timestamp,lp_kinderprogramm smallint, veranstaltung_id serial PRIMARY KEY);");
+		stmt.executeUpdate("CREATE TABLE geodata (street varchar(255), nr varchar(10), latitude double precision, longitude double precision);");
 		
 		System.out.println("done.");
 	}
@@ -192,6 +193,8 @@ public class ProjektDB {
 		}
 		
 	
+		StringBuffer buf = new StringBuffer();
+		buf.append("INSERT INTO geodata VALUES\n");
 		String line;
 		
 		try {
@@ -203,17 +206,19 @@ public class ProjektDB {
 				String straße = tok.nextToken();
 				String nr = tok.nextToken(); // die while schleifen um leerzeichen am anfang zu entfernen...
 				while(nr.charAt(0) == ' ') {nr = nr.substring(1, nr.length());}
-				tok.nextToken(); // hausnummer wegschmeissen
+				tok.nextToken(); // plz wegschmeissen
 				tok.nextToken(); // berlin wegschmeissen
 				String latitude = tok.nextToken();
 				while(latitude.charAt(0) == ' ') {latitude = latitude.substring(1, latitude.length());}
 				String longitude = tok.nextToken();
+				while(longitude.charAt(0) == ' ') {longitude = longitude.substring(1, longitude.length());}
 				
-				String tmp = "UPDATE ort SET latitude = " + latitude + ", longitude = " + longitude
-												+ " WHERE lp_fp_street = '" + straße + "' AND lp_fp_nr = '" + nr + "';";
-				stmt.executeUpdate(tmp);
-
+				buf.append("('"+straße+"', '"+nr+"', "+latitude+", "+longitude+"),\n");
 			}
+			buf.delete(buf.length()-2, buf.length());
+			buf.append(";");
+			
+			stmt.executeUpdate(buf.toString());
 				
 		} catch(IOException e) {
 			e.printStackTrace();
