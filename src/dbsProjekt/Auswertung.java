@@ -28,23 +28,28 @@ public class Auswertung {
 	 * @param con
 	 * @return
 	 */
-	public static LinkedList<LinkedList<Triple<String, String, Integer>>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
+	public static LinkedList<Triple<String, String, String>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
 		
-		LinkedList<LinkedList<Triple<String, String, Integer>>> ret = new LinkedList<LinkedList<Triple<String,String,Integer>>>();
-		
-		// TODO implement
+		LinkedList<Triple<String, String, String>> ret = new LinkedList<Triple<String,String,String>>();
 		
 		try {
 			
-			// wir wollen eine Auflistung folgender Form bekommen: |veranstaltungsID|besucherzahl|
-			// String tmp = "SELECT veranstaltung_id, besucherzahl FROM besucherzahl;" ;
-			String tmp = "(SELECT veranstaltung_id, lndw_year FROM besucherzahlen, veranstaltung WHERE lndw_year = "+ jahr1 +") INNER JOIN (" +
-					"(SELECT veranstaltung_id, lndw_year FROM besucherzahlen, veranstaltung WHERE lndw_year = "+ jahr2 +");" ;
+			// wir wollen eine Auflistung folgender Form bekommen: |veranstaltungsID|besucherzahlJahr1|besucherzahlJahr2|
+			
+			String tmp = "SELECT v2.lp_title, v1.besucherzahl AS besucherzahl_jahr1, v2.besucherzahl AS besucherzahl_jahr2 FROM " +
+					"(veranstaltung INNER JOIN besucherzahlen ON veranstaltung.veranstaltung_id = besucherzahlen.veranstaltung_id) v1," +
+					"(veranstaltung INNER JOIN besucherzahlen ON veranstaltung.veranstaltung_id = besucherzahlen.veranstaltung_id) v2 " +
+					"WHERE v1.lp_title = v2.lp_title AND v1.lp_lndw_year = '2009' AND v2.lp_lndw_year = '2010';";
+			
 			ResultSet res_besucherzahlen = con.get().createStatement().executeQuery(tmp);
 			
-			SQL_Utility.printResultSet(res_besucherzahlen);
-			
-			// TODO weitermachen
+			while(res_besucherzahlen.next()) {
+				
+				ret.add(new Triple<String,String,String>(res_besucherzahlen.getString("lp_title"),
+													     res_besucherzahlen.getString("besucherzahl_jahr1"),
+													     res_besucherzahlen.getString("besucherzahl_jahr2)")));
+				
+			}
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -79,7 +84,7 @@ public class Auswertung {
 	/**
 	 * mänsch, warum gibts keine Tupelz in java -.-
 	 */
-	private class Triple<V, W, X> {
+	private static class Triple<V, W, X> {
 		
 		V value1;
 		W value2;

@@ -10,6 +10,7 @@ public class SQL_Utility {
 	
 	/**
 	 * Methode um ein ResultSet auf der Kommandozeile auszugeben
+	 * LIEBER NICHT BENUTZEN, FUNKTIONIERT NICHT SO RICHTIG...
 	 * @throws SQLException
 	 */
 	public static void printResultSet(ResultSet res) throws SQLException {
@@ -97,9 +98,5 @@ public class SQL_Utility {
 		
 	}
 	
-	
-	public static void addUUID() {
-		
-	}
 
 }
