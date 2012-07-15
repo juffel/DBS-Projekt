@@ -12,6 +12,36 @@ import java.util.LinkedList;
 public class Auswertung {
 	
 	/**
+	 * Liest alle Orte mit Geodaten ein und berechnet paarweise alle Abstände, liefert diese als Liste zurück
+	 * @return
+	 */
+	public static LinkedList<Triple<String, String, Float>> generateDistances(Connection con) {
+		
+		LinkedList<Triple<String, String, Float>> ret = new LinkedList<Auswertung.Triple<String,String,Float>>();
+		LinkedList<Triple<String, Float, Float>> data = new LinkedList<Auswertung.Triple<String,Float,Float>>();
+		
+		try {
+			
+			ResultSet qry = SQL_Utility.getFromTable(con, "geodata", new String[] {"street", "nr", "latitude", "longitude"});
+			
+			while(qry.next()) {
+				
+				data.add(new Triple<String, Float, Float>(qry.getString("street")+ qry.getString("nr"), qry.getFloat("latitude"), qry.getFloat("longitude")));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+				
+			
+		return ret;
+		
+	}
+	
+	
+	/**
 	 * Dieser Methode wird als parameter eine LinkedList(Jahre) von LinkedLists(Tupel (Veranstaltung, Besucherzahl)) übergeben,
 	 * welche evaluiert werden.
 	 */
@@ -139,6 +169,34 @@ public class Auswertung {
 		}
 		public X getValue3() {
 			return value3;
+		}
+		
+	}
+	
+	public static class Fourple<V, W, X, Y> {
+		
+		private V value1;
+		private W value2;
+		private X value3;
+		private Y value4;
+		private Fourple(V value1, W value2, X value3, Y value4) {
+			super();
+			this.value1 = value1;
+			this.value2 = value2;
+			this.value3 = value3;
+			this.value4 = value4;
+		}
+		public V getValue1() {
+			return value1;
+		}
+		public W getValue2() {
+			return value2;
+		}
+		public X getValue3() {
+			return value3;
+		}
+		public Y getValue4() {
+			return value4;
 		}
 		
 	}
