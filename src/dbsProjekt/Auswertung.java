@@ -91,6 +91,12 @@ public class Auswertung {
 	}
 	
 	
+	public static void calcDistances() {
+		
+		
+		
+	}
+	
 	
 	/**
 	 * mänsch, warum gibts keine Tupelz in java -.-

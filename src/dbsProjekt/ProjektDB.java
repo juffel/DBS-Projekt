@@ -2,12 +2,16 @@ package dbsProjekt;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 /**
  * Mithilfe dieser Klasse kann man eine Datenbank erzeugen, die unserem Schema entspricht.
@@ -26,7 +30,7 @@ public class ProjektDB {
 	 */
 	public void init(String path) throws SQLException {
 		
-		File input = new File(path);
+		File input = new File(path+"lange_nacht_postgres.sql");
 		BufferedReader rdr;
 		
 		try {
@@ -34,7 +38,7 @@ public class ProjektDB {
 			rdr = new BufferedReader(new FileReader(input));
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
+			System.out.println("File lange_nacht_postgres.sql not found.");
 			return;
 		}
 		
@@ -128,7 +132,7 @@ public class ProjektDB {
 		// Create Tables
 
 		stmt.executeUpdate("create table veranstalter (lp_pa_name text,lp_pa_i_name text,lp_pa_i_fb_name text,lp_pa_notes text,veranstalter_id serial PRIMARY KEY);");
-		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint, ort_id serial PRIMARY KEY);");
+		stmt.executeUpdate("create table ort (lp_fp_street varchar(255),lp_fp_nr varchar(10),lp_fp_location varchar(255),lp_fp_plz int,lp_fp_city varchar(255),lp_fp_name varchar(255),lp_fp_cashplace int,lp_fp_barrierfree smallint, ort_id serial PRIMARY KEY, latitude double precision, longitude double precision);");
 		stmt.executeUpdate("create table veranstaltung (lp_title text,lp_lndw_year varchar(4),lp_user_comment text,lp_content_short text,lp_start_time time,lp_end_time time,lp_continuous smallint,lp_period int,lp_time_necessary int,lp_time_is_recommended smallint,lp_time_comment text,lp_signingdate timestamp,lp_kinderprogramm smallint, veranstaltung_id serial PRIMARY KEY);");
 		
 		System.out.println("done.");
@@ -138,7 +142,7 @@ public class ProjektDB {
 	/**
 	 * extrahiert die Daten aus dem großen red_table und fügt sie in die jeweiligen Tabellen ein
 	 */
-	public void fillTables() throws SQLException {
+	public void fillTables(String path) throws SQLException {
 		
 		System.out.print("filling tables...");
 	
@@ -168,8 +172,59 @@ public class ProjektDB {
 		System.out.println("veranstaltung table done.");
 
 		
-		// UUIDs hinzufügen
+		System.out.println("add geodata...");
 		
+		// Ortsdatei einfügen
+		File file = new File(path + "orte.txt");
+		BufferedReader rdr;
+		
+		try {
+			
+			rdr = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File orte.txt not found.");
+			return;
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	
+		String line;
+		
+		try {
+			
+			while((line = rdr.readLine()) != null) {		
+
+				StringTokenizer tok = new StringTokenizer(line, ";\n");
+				
+				String straße = tok.nextToken();
+				String nr = tok.nextToken(); // die while schleifen um leerzeichen am anfang zu entfernen...
+				while(nr.charAt(0) == ' ') {nr = nr.substring(1, nr.length());}
+				tok.nextToken(); // hausnummer wegschmeissen
+				tok.nextToken(); // berlin wegschmeissen
+				String latitude = tok.nextToken();
+				while(latitude.charAt(0) == ' ') {latitude = latitude.substring(1, latitude.length());}
+				String longitude = tok.nextToken();
+				
+				String tmp = "UPDATE ort SET latitude = " + latitude + ", longitude = " + longitude
+												+ " WHERE lp_fp_street = '" + straße + "' AND lp_fp_nr = '" + nr + "';";
+				stmt.executeUpdate(tmp);
+
+			}
+				
+		} catch(IOException e) {
+			e.printStackTrace();
+			return;
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("done.");
+				
 		
 		System.out.println("filling tables done.");
 		
