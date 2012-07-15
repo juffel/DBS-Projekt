@@ -11,8 +11,7 @@ public class Main {
 			System.exit(0);
 		}
 		
-		ProjektDB imp = new ProjektDB();
-		
+		ProjektDB imp = new ProjektDB();		
 
 		try {
 			
@@ -23,7 +22,8 @@ public class Main {
 			Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
 			
 // 			Einwertung.fillTables(con);
-			Auswertung.fetchVisitorData(con, "2009", "2010");
+// 			Auswertung.fetchVisitorData(con, "2009", "2010");
+			Auswertung.evaluateVisitors(con);
 			
 		}
 		catch(Exception e){
