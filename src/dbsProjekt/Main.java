@@ -53,7 +53,7 @@ public class Main {
 				e.printStackTrace();
 			}
 			
-			
+			//Besucherzahlen
 			if(eingabe.equals("B") || eingabe.equals("b")) {
 				
 				Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
@@ -83,12 +83,13 @@ public class Main {
 				Auswertung.evaluateVisitors(con, jahr1, jahr2);
 				
 			}
+			//Distanzenberechnung
 			else if(eingabe.equals("D") || eingabe.equals("d")) {
 				Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
 				Auswertung.generateDistances(con);
 				
 				
-			}
+			}//Programm verlassen
 			else if(eingabe.equals("E") || eingabe.equals("e")) {
 				
 				System.out.println("Programm wirklich Verlassen? (y/n)");
