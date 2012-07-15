@@ -1,5 +1,8 @@
 package dbsProjekt;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 public class Main {
@@ -7,30 +10,71 @@ public class Main {
 	public static void main(String args[]) {
 		
 		if(args.length != 1) {
-			System.out.println("Beim Programmaufruf Pfad der einzulesenden sql Datei angeben");
+			System.out.println("Beim Programmaufruf Pfad des Verzeichnisses angeben in\n" +
+					           "dem die \"lange_nacht_postgres.sql\" und die \"ort.txt\" liegen.");
 			System.exit(0);
 		}
 		
 		ProjektDB imp = new ProjektDB();		
 
+		System.out.println("Willkommen im DBS-Projekt von Julian Dobmann, Samuel Gfrörer und André Röhrig.");
+		System.out.println("Es wird jetzt eine neue Datenbank angelegt und initialisiert. Das kann eine Weile dauern.");	
+		
+		// init
 		try {
 			
 			imp.init(args[0]);
 			imp.createTables();			
 			imp.fillTables(args[0]);
 			
-			Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("Die Initialisierung ist vollständig abgeschlossen.");
+				
+		boolean run = true;	
+		while(run) {
 			
-			Einwertung.createTables(con);
- 			Einwertung.fillTables(con);
- 			Auswertung.fetchVisitorData(con, "2009", "2010");
-			Auswertung.evaluateVisitors(con);
-			Auswertung.generateDistances(con);
+			System.out.println("Sie haben folgende Auswahlmöglichkeiten: (D|B|E)\n" +
+							   "Ausgabe aller Distanzen aller in der Datenbank enthaltenen Orte (D)\n" + 
+							   "Ausgabe der Besucherschwankungen zwischen zwei Jahren (B)\n" +
+							   "Programm verlassen (E)");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			String eingabe = null;
+			
+			try {
+				
+				eingabe = br.readLine();
+				
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+			if(eingabe.equals("B") || eingabe.equals("b")) {
+				
+				
+				
+			}
+			else if(eingabe.equals("D") || eingabe.equals("d")) {
+				
+				
+				
+			}
+			else if(eingabe.equals("E") || eingabe.equals("e")) {
+				
+				
+				
+			}
+			else {
+				
+				
+				
+			}
 			
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		} 
 		
 	}
 
