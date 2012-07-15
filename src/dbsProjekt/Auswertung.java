@@ -10,7 +10,6 @@ import java.util.LinkedList;
  * Klasse für die Auswertung von fiktiven Besucherzahldaten
  *
  */
-
 public class Auswertung {
 	
 	/**
@@ -34,6 +33,21 @@ public class Auswertung {
 		LinkedList<LinkedList<Triple<String, String, Integer>>> ret = new LinkedList<LinkedList<Triple<String,String,Integer>>>();
 		
 		// TODO implement
+		
+		try {
+			
+//			ResultSet res_besucherzahlen = SQL_Utility.getFromTable(con, "besucherzahlen", new String[]{"*"});
+			
+			// wir wollen eine Auflistung folgender Form bekommen:
+			// |veranstaltungsID|besucherzahl|coord_w|coord_s|
+
+			String tmp = "";
+			
+			ResultSet res_besucherzahlen = con.get().createStatement().executeQuery(tmp);
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return ret;
 		
