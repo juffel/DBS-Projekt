@@ -84,7 +84,7 @@ public class Main {
 				
 			}
 			else if(eingabe.equals("D") || eingabe.equals("d")) {
-				Connection con = new Connection("localhost", "5432", "template1", "user", "password");
+				Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
 				Auswertung.generateDistances(con);
 				
 				
