@@ -15,10 +15,10 @@ public class Auswertung {
 	 * Liest alle Orte mit Geodaten ein und berechnet paarweise alle Abstände, liefert diese als Liste zurück
 	 * @return
 	 */
-	public static LinkedList<Triple<String, String, Float>> generateDistances(Connection con) {
+	public static LinkedList<Triple<String, String, Double>> generateDistances(Connection con) {
 		
-		LinkedList<Triple<String, String, Float>> ret = new LinkedList<Auswertung.Triple<String,String,Float>>();
-		LinkedList<Triple<String, Float, Float>> data = new LinkedList<Auswertung.Triple<String,Float,Float>>();
+		LinkedList<Triple<String, String, Double>> ret = new LinkedList<Auswertung.Triple<String,String,Double>>();
+		LinkedList<Triple<String, Double, Double>> data = new LinkedList<Auswertung.Triple<String,Double,Double>>();
 		
 		try {
 			
@@ -26,7 +26,7 @@ public class Auswertung {
 			
 			while(qry.next()) {
 				
-				data.add(new Triple<String, Float, Float>(qry.getString("street")+ qry.getString("nr"), qry.getFloat("latitude"), qry.getFloat("longitude")));
+				data.add(new Triple<String, Double, Double>(qry.getString("street")+" "+ qry.getString("nr"), qry.getDouble("latitude"), qry.getDouble("longitude")));
 			}
 			
 		} catch(SQLException e) {
@@ -34,8 +34,25 @@ public class Auswertung {
 			return null;
 		}
 		
-				
+		for(int i = 0; i < data.size(); i++) {
 			
+			for(int j = i+1; j < data.size(); j++) {
+				
+				double lat1 = (double) data.get(i).value2;
+				double lon1 = (double) data.get(i).value3;
+				double lat2 = (double) data.get(j).value2;
+				double lon2 = (double) data.get(j).value3;
+				
+				ret.add(new Triple<String, String, Double> (data.get(i).value1, data.get(j).value1, Distances.distance(lat1, lon1, lat2, lon2,'K')));
+				
+			}
+			
+		}
+		
+		for(Triple<String, String, Double> tr:ret) {	
+			System.out.println(tr.toString());	
+		}
+		
 		return ret;
 		
 	}
@@ -121,12 +138,6 @@ public class Auswertung {
 	}
 	
 	
-	public static void calcDistances() {
-		
-		
-		
-	}
-	
 	
 	/**
 	 * mänsch, warum gibts keine Tupelz in java -.-
@@ -144,6 +155,10 @@ public class Auswertung {
 		}
 		public W getValue2() {
 			return value2;
+		}
+		
+		public String toString() {
+			return new String("(" + value1.toString() + ", " + value2.toString() + ")");
 		}
 		
 	}
@@ -169,6 +184,10 @@ public class Auswertung {
 		}
 		public X getValue3() {
 			return value3;
+		}
+		
+		public String toString() {
+			return new String("(" + value1.toString() + ", " + value2.toString() + ", " + value3.toString() + ")");
 		}
 		
 	}
@@ -197,6 +216,10 @@ public class Auswertung {
 		}
 		public Y getValue4() {
 			return value4;
+		}
+		
+		public String toString() {
+			return new String("(" + value1.toString() + ", " + value2.toString() + ", " + value3.toString() + ", " + value4.toString() + ")");
 		}
 		
 	}
