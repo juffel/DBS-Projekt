@@ -43,7 +43,7 @@ public class Auswertung {
 				double lat2 = (double) data.get(j).value2;
 				double lon2 = (double) data.get(j).value3;
 				
-				ret.add(new Triple<String, String, Double> (data.get(i).value1, data.get(j).value1, Distances.distance(lat1, lon1, lat2, lon2,'K')));
+				ret.add(new Triple<String, String, Double> (data.get(i).value1, data.get(j).value1, Distances.distance(lat1, lon1, lat2, lon2)));
 				
 			}
 			
