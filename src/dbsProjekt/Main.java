@@ -21,9 +21,10 @@ public class Main {
 			
 			Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
 			
-// 			Einwertung.fillTables(con);
-// 			Auswertung.fetchVisitorData(con, "2009", "2010");
-// 			Auswertung.evaluateVisitors(con);
+			Einwertung.createTables(con);
+ 			Einwertung.fillTables(con);
+ 			Auswertung.fetchVisitorData(con, "2009", "2010");
+			Auswertung.evaluateVisitors(con);
 			Auswertung.generateDistances(con);
 			
 		}

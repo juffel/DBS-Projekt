@@ -13,9 +13,7 @@ import java.util.Random;
 
 public class Einwertung {
 	
-	private Statement stmt;
-	
-	public void createTables(Connection con) throws SQLException {
+	public static void createTables(Connection con) throws SQLException {
 		
 		System.out.print("creating tables...");
 
@@ -24,8 +22,8 @@ public class Einwertung {
 			return;
 		} 
 		
-		stmt.executeUpdate("drop table if exists besucherzahlen;");
-		stmt.executeUpdate("create table besucherzahlen (veranstaltung_id integer REFERENCES veranstaltung,besucherzahl integer);");
+		con.get().createStatement().executeUpdate("drop table if exists besucherzahlen;");
+		con.get().createStatement().executeUpdate("create table besucherzahlen (veranstaltung_id integer REFERENCES veranstaltung,besucherzahl integer);");
 	}
 	
 	
@@ -49,8 +47,6 @@ public class Einwertung {
 		}
 		buf.delete(buf.length()-2, buf.length());
 		buf.append(";");
-		
-		System.out.println(buf.toString());
 		
 		con.get().createStatement().executeUpdate(buf.toString());
 		

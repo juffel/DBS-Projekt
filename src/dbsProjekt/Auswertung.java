@@ -71,37 +71,29 @@ public class Auswertung {
 			for(Integer j = i; j <= 2012; j++) {
 				
 				LinkedList<Triple<String, Integer, Integer>> tmp = fetchVisitorData(con, i.toString(), j.toString());
-				// System.out.println("Besucherzahlen für die Jahre " + i + " " + j + ":\n");
-				System.out.printf("%20s Besucher %4s %4s %4s %n", "Veranstaltungsname", i, j, "Differenz");
+				System.out.println("Besucherzahlen für die Jahre " + i + " " + j + ":\n");
 				for(Triple<String, Integer, Integer> tr : tmp) {
 					
 					int value1 = tr.getValue2();
 					int value2 = tr.getValue3();
 					
-					// System.out.print(tr.getValue1() +": "+ value1 +", "+ value2);
-					System.out.printf("%20s Besucher %4s %4s", tr.getValue1(), tr.getValue2(), tr.getValue3());
-					
+					System.out.print(tr.getValue1() +": "+ value1 +", "+ value2);
 					
 					if(value1 > value2)  {
-						// System.out.print(" - " + ((Integer) (value1-value2)).toString());
-						System.out.printf("- %4d%n", value1-value2);
+						System.out.print(" - " + ((Integer) (value1-value2)).toString());
 					}
 					
 					else if(value1 < value2) {
-						// System.out.print(" + " + ((Integer) (value1-value2)).toString());
-						System.out.printf("+ %4d%n", value1-value2);
+						System.out.print(" + " + ((Integer) (value1-value2)).toString());
 					}
 					
 					else {
-						// System.out.print(" = "  + ((Integer) (value1-value2)).toString());
-						System.out.printf("= %4d%n", value1-value2);
+						System.out.print(" = "  + ((Integer) (value1-value2)).toString());
 					}
 					
 					System.out.println("");
 					
 				}
-				
-				System.out.println("");
 				
 			}
 			
