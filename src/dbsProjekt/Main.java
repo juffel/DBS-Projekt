@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
 
 public class Main {
 	
@@ -55,7 +56,31 @@ public class Main {
 			
 			if(eingabe.equals("B") || eingabe.equals("b")) {
 				
+				Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
+				System.out.print("Besucherzahlen werden generiert...");
+				try {
+					Einwertung.createTables(con);
+					Einwertung.fillTables(con);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return;
+				}
+				System.out.println("done.");
 				
+				System.out.println("Für welche zwei Jahre möchten Sie die Differenz der Besucherzahlen betrachten?\n" +
+								   "(2008|2009|2010|2011|2012) z.B.: \"2008 2009\"");
+				try {
+					eingabe = br.readLine();
+				} catch(IOException e) {
+					e.printStackTrace();
+					return;
+				}
+				
+				StringTokenizer strTok = new StringTokenizer(eingabe);
+				String jahr1 = strTok.nextToken();
+				String jahr2 = strTok.nextToken();
+				
+				Auswertung.evaluateVisitors(con, jahr1, jahr2);
 				
 			}
 			else if(eingabe.equals("D") || eingabe.equals("d")) {
@@ -66,7 +91,21 @@ public class Main {
 			}
 			else if(eingabe.equals("E") || eingabe.equals("e")) {
 				
-				
+				System.out.println("Programm wirklich Verlassen? (y/n)");
+				try {
+					eingabe = br.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				if(eingabe.equals("Y") || eingabe.equals("y")) {
+					
+					run = false;
+					System.out.println("Auf Wiedersehen!");
+					
+				} else {
+					
+					System.out.println("Verlassen abgebrochen.");
+				}
 				
 			}
 			else {

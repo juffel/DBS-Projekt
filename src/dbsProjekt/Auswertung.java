@@ -61,41 +61,32 @@ public class Auswertung {
 	
 	
 	/**
-	 * Dieser Methode wird als parameter eine LinkedList(Jahre) von LinkedLists(Tupel (Veranstaltung, Besucherzahl)) übergeben,
-	 * welche evaluiert werden.
+	 * Diese Methode gibt für die angegebenen Jahre die einzelnen Besucherzahldifferenzen aus
 	 */
-	public static void evaluateVisitors(Connection con) {
+	public static void evaluateVisitors(Connection con, String jahr1, String jahr2) {
 		
-		for(Integer i = 2008; i <= 2012; i++) {
+		LinkedList<Triple<String, Integer, Integer>> tmp = fetchVisitorData(con, jahr1, jahr2);
+		System.out.println("Besucherzahlen für die Jahre " + jahr1 + " " + jahr2 + ":\n");
+		for(Triple<String, Integer, Integer> tr : tmp) {
+					
+			int value1 = tr.getValue2();
+			int value2 = tr.getValue3();
 			
-			for(Integer j = i; j <= 2012; j++) {
+			System.out.print(tr.getValue1() +": "+ value1 +", "+ value2);
 				
-				LinkedList<Triple<String, Integer, Integer>> tmp = fetchVisitorData(con, i.toString(), j.toString());
-				System.out.println("Besucherzahlen für die Jahre " + i + " " + j + ":\n");
-				for(Triple<String, Integer, Integer> tr : tmp) {
-					
-					int value1 = tr.getValue2();
-					int value2 = tr.getValue3();
-					
-					System.out.print(tr.getValue1() +": "+ value1 +", "+ value2);
-					
-					if(value1 > value2)  {
-						System.out.print(" - " + ((Integer) (value1-value2)).toString());
-					}
-					
-					else if(value1 < value2) {
-						System.out.print(" + " + ((Integer) (value1-value2)).toString());
-					}
-					
-					else {
-						System.out.print(" = "  + ((Integer) (value1-value2)).toString());
-					}
-					
-					System.out.println("");
-					
-				}
-				
+			if(value1 > value2)  {
+				System.out.print(" - " + ((Integer) (value1-value2)).toString());
 			}
+					
+			else if(value1 < value2) {
+				System.out.print(" + " + ((Integer) (value1-value2)).toString());
+			}
+					
+			else {
+				System.out.print(" = "  + ((Integer) (value1-value2)).toString());
+			}
+			
+			System.out.println("");
 			
 		}
 		

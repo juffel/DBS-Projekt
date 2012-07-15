@@ -13,6 +13,9 @@ import java.util.Random;
 
 public class Einwertung {
 	
+	/**
+	 * Erstellt den table für die Besucherzahlen
+	 */
 	public static void createTables(Connection con) throws SQLException {
 		
 		System.out.print("creating tables...");
@@ -27,6 +30,9 @@ public class Einwertung {
 	}
 	
 	
+	/**
+	 * Füllt den table besucherzahlen mit fiktiven, ausgelosten Werten
+	 */
 	public static void fillTables(Connection con) throws SQLException {
 		
 		System.out.print("filling tables...");
