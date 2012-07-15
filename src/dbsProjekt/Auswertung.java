@@ -95,7 +95,7 @@ public class Auswertung {
 	/**
 	 * mänsch, warum gibts keine Tupelz in java -.-
 	 */
-	public class Tuple<V, W> {
+	public static class Tuple<V, W> {
 		
 		private V value1;
 		private W value2;
