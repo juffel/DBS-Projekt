@@ -21,7 +21,9 @@ public class Einwertung {
 			System.out.println("cannot create Tables, no connection to database");
 			return;
 		} 
-		stmt.executeUpdate("create table besucherzahlen (veranstaltung_id integer,besucherzahl integer);");
+		
+		stmt.executeUpdate("drop table if exists besucherzahlen;");
+		stmt.executeUpdate("create table besucherzahlen (veranstaltung_id integer REFERENCES veranstaltung,besucherzahl integer);");
 	}
 	
 public void fillTables(Connection con) throws SQLException {
