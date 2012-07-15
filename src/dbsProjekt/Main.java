@@ -20,12 +20,14 @@ public class Main {
 //			imp.createTables();			
 //			imp.fillTables();
 			
+			Connection con = new Connection("localhost", "5432", "lndw", "user", "password");
 			
+			Einwertung.fillTables(con);
 			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-		}
+		} 
 		
 	}
 

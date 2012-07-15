@@ -3,6 +3,7 @@ package dbsProjekt;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 ;
 
 /**
@@ -11,6 +12,7 @@ import java.sql.Statement;
  */
 
 public class Einwertung {
+	
 	private Statement stmt;
 	
 	public void createTables(Connection con) throws SQLException {
@@ -26,7 +28,8 @@ public class Einwertung {
 		stmt.executeUpdate("create table besucherzahlen (veranstaltung_id integer REFERENCES veranstaltung,besucherzahl integer);");
 	}
 	
-public void fillTables(Connection con) throws SQLException {
+	
+	public static void fillTables(Connection con) throws SQLException {
 		
 		System.out.print("filling tables...");
 	
@@ -35,7 +38,21 @@ public void fillTables(Connection con) throws SQLException {
 			return;
 		}
 		
-		stmt.executeUpdate("INSERT INTO besucherzahlen VALUES (1,555);");
+		StringBuffer buf = new StringBuffer();
+		
+		buf.append("INSERT INTO besucherzahlen VALUES \n");
+		
+		Random rnd = new Random();
+		
+		for(int i = 1; i <= 2111; i++) {
+			buf.append("('"+ i + "', '"+ rnd.nextInt(10000) +"'),\n");
+		}
+		buf.delete(buf.length()-2, buf.length());
+		buf.append(";");
+		
+		System.out.println(buf.toString());
+		
+		con.get().createStatement().executeUpdate(buf.toString());
 		
 		System.out.println("besucherzahlen table done.");
 		

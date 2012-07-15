@@ -28,7 +28,7 @@ public class Auswertung {
 	 * @param con
 	 * @return
 	 */
-	private LinkedList<LinkedList<Triple<String, String, Integer>>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
+	public static LinkedList<LinkedList<Triple<String, String, Integer>>> fetchVisitorData(Connection con, String jahr1, String jahr2) {
 		
 		LinkedList<LinkedList<Triple<String, String, Integer>>> ret = new LinkedList<LinkedList<Triple<String,String,Integer>>>();
 		
